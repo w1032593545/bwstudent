@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body>
+<div class="jumbotron jumbotron-fluid" style="margin: 30px 0 30px">
+    <div class="container">
+        <h1 class="display-4"><a href="{{ url_for('index') }}" style="color: black;text-decoration: none">学生信息管理系统</a>
+        </h1>
+        <p class="lead">Student Information Management System</p>
+    </div>
+</div>
+<div style="width: 1200px;text-align: center;margin: 0 auto">
+    <form action="{{ url_for('search') }}" method="post">
+        <div class="form-group" style="margin-bottom: 10px">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="请输入学生ID或姓名" name="text">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">搜索</button>
+                </div>
+            </div>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your information with anyone
+                else.</small>
+        </div>
+    </form>
+    {% if not datas %}
+        {% if not orders %}
+            <table class="table table-hover" style="line-height: 40px">
+                <thead>
+                <tr>
+                    <th scope="col">学号</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col"><a href="{{ url_for('order', order='english') }}"
+                                       style="color: black;text-decoration: none">英语成绩</a></th>
+                    <th scope="col"><a href="{{ url_for('order', order='python') }}"
+                                       style="color: black;text-decoration: none">python成绩</a></th>
+                    <th scope="col"><a href="{{ url_for('order', order='c') }}"
+                                       style="color: black;text-decoration: none">C语言成绩</a>
+                    </th>
+                    <th scope="col"><a href="{{ url_for('order', order='score') }}"
+                                       style="color: black;text-decoration: none">总成绩</a></th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for information in informations %}
+                    <tr>
+                        <th scope="row">{{ information.id }}</th>
+                        <td>{{ information.name }}</td>
+                        <td>{{ information.english }}</td>
+                        <td>{{ information.python }}</td>
+                        <td>{{ information.c }}</td>
+                        <td>{{ information.score }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ url_for('modify', modify=information.id) }}"
+                               role="button">修改</a>
+                            <a class="btn btn-primary" href="{{ url_for('dels', del=information.id) }}" role="button"
+                               style="background-color: red;border: red">删除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <p style="color: red">{{ err }}</p>
+
+                </tbody>
+            </table>
+            <div style="margin: 50px 0 0;">
+                <a href="{{ url_for("addOrModify") }}" class="btn btn-primary btn-lg"
+                   style="float: left;cursor:pointer;">录入学生信息</a>
+                <p class="lead" style="float: right;margin: 0 30px;line-height: 48px">
+                    共有{{ informations | length }}名学生</p>
+            </div>
+        {% else %}
+            <table class="table table-hover" style="line-height: 40px">
+                <thead>
+                <tr>
+                    <th scope="col">学号</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col"><a href="{{ url_for('order', order='english') }}"
+                                       style="color: black;text-decoration: none">英语成绩</a></th>
+                    <th scope="col"><a href="{{ url_for('order', order='python') }}"
+                                       style="color: black;text-decoration: none">python成绩</a></th>
+                    <th scope="col"><a href="{{ url_for('order', order='c') }}"
+                                       style="color: black;text-decoration: none">C语言成绩</a>
+                    </th>
+                    <th scope="col"><a href="{{ url_for('order', order='score') }}"
+                                       style="color: black;text-decoration: none">总成绩</a></th>
+                    <th scope="col">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <th scope="row">{{ order.id }}</th>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.english }}</td>
+                        <td>{{ order.python }}</td>
+                        <td>{{ order.c }}</td>
+                        <td>{{ order.score }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ url_for('modify', modify=order.id) }}"
+                               role="button">修改</a>
+                            <a class="btn btn-primary" href="{{ url_for('dels', del=order.id) }}" role="button"
+                               style="background-color: red;border: red">删除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <p style="color: red">{{ err }}</p>
+
+                </tbody>
+            </table>
+            <div style="margin: 50px 0 0;">
+                <a href="{{ url_for("addOrModify") }}" class="btn btn-primary btn-lg"
+                   style="float: left;cursor:pointer;">录入学生信息</a>
+                <p class="lead" style="float: right;margin: 0 30px;line-height: 48px">
+                    共有{{ d | length }}名学生</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <table class="table table-hover" style="line-height: 40px">
+            <thead>
+            <tr>
+                <th scope="col">学号</th>
+                <th scope="col">姓名</th>
+                <th scope="col">英语成绩</th>
+                <th scope="col">python成绩</th>
+                <th scope="col">C语言成绩</th>
+                <th scope="col">总成绩</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for data in datas %}
+                <tr>
+                    <th scope="row">{{ data.id }}</th>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.english }}</td>
+                    <td>{{ data.python }}</td>
+                    <td>{{ data.c }}</td>
+                    <td>{{ data.score }}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{{ url_for('modify', modify=data.id) }}" role="button">修改</a>
+                        <a class="btn btn-primary" href="{{ url_for('dels', del=data.id) }}" role="button"
+                           style="background-color: red;border: red">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+        <div style="margin: 50px 0 0;">
+            <a href="{{ url_for("addOrModify") }}" class="btn btn-primary btn-lg"
+               style="float: left;cursor:pointer;">录入学生信息</a>
+            <p class="lead" style="float: right;margin: 0 30px;line-height: 48px">
+                共有{{ datas | length }}名学生</p>
+        </div>
+    {% endif %}
+</div>
+<footer style="margin-top: 200px;text-align: center">
+    <p>
+        &copy; 2020 - IronMan
+    </p>
+</footer>
+</body>
+</html>
