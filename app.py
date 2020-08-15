@@ -22,8 +22,8 @@ def addOrModify():
         get_english = request.form.get('english')
         get_python = request.form.get('python')
         get_c = request.form.get('c')
-        score = int(get_english) + int(get_python) + int(get_c)
         if get_name and get_english and get_python and get_c:
+            score = int(get_english) + int(get_python) + int(get_c)
             data = Student(name=get_name, english=get_english, python=get_python, c=get_c, score=score)
             db.session.add(data)
             db.session.commit()
@@ -52,8 +52,8 @@ def modify():
             get_english = request.form.get('english')
             get_python = request.form.get('python')
             get_c = request.form.get('c')
-            score = int(get_english) + int(get_python) + int(get_c)
             if get_name and get_english and get_python and get_c:
+                score = int(get_english) + int(get_python) + int(get_c)
                 data.update({'name': get_name, 'english': get_english, 'python': get_python, 'c': get_c, 'score':score})
                 db.session.commit()
                 return redirect(url_for('index'))
